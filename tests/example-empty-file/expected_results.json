@@ -1,5 +1,5 @@
 {
   "version": 1,
   "status": "fail",
-  "output": "TODO: replace with correct output"
+  "output": "\r\u001b[1m\u001b[1;30mloading test/example_empty_file_test.dart\u001b[0m \u001b[1m\u001b[31m[E]\u001b[0m\u001b[0m                                                                                                                                             \n  \u001b[31mFailed to load \"test/example_empty_file_test.dart\":\u001b[0m\n  Unable to spawn isolate: test/example_empty_file_test.dart:'Leap'.\n  final leap = Leap();\n               ^^^^\n\r\u001b[31mSome tests failed.\u001b[0m                                                                                                                                                                        "
 }

@@ -1,1 +1,4 @@
 tests/**/results.json
+tests/**/.dart_tool/
+tests/**/.packages
+tests/**/pubspec.lock

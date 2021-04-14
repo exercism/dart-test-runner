@@ -1,0 +1,32 @@
+00:00 +0: loading test/example_partial_fail_test.dart
+00:01 +0: loading test/example_partial_fail_test.dart
+00:01 +0: test/example_partial_fail_test.dart: Leap year not divisible by 4 in common year
+00:01 +1: test/example_partial_fail_test.dart: Leap year not divisible by 4 in common year
+00:01 +1: test/example_partial_fail_test.dart: Leap year divisible by 2, not divisible by 4 in common year
+00:01 +2: test/example_partial_fail_test.dart: Leap year divisible by 2, not divisible by 4 in common year
+00:01 +2: test/example_partial_fail_test.dart: Leap year divisible by 4, not divisible by 100 in leap year
+00:01 +3: test/example_partial_fail_test.dart: Leap year divisible by 4, not divisible by 100 in leap year
+00:01 +3: test/example_partial_fail_test.dart: Leap year divisible by 4 and 5 is still a leap year
+00:01 +4: test/example_partial_fail_test.dart: Leap year divisible by 4 and 5 is still a leap year
+00:01 +4: test/example_partial_fail_test.dart: Leap year divisible by 100, not divisible by 400 in common year
+00:01 +5: test/example_partial_fail_test.dart: Leap year divisible by 100, not divisible by 400 in common year
+00:01 +5: test/example_partial_fail_test.dart: Leap year divisible by 100 but not by 3 is still not a leap year
+00:01 +6: test/example_partial_fail_test.dart: Leap year divisible by 100 but not by 3 is still not a leap year
+00:01 +6: test/example_partial_fail_test.dart: Leap year divisible by 400 in leap year
+00:01 +6 -1: test/example_partial_fail_test.dart: Leap year divisible by 400 in leap year [E]
+
+  Expected: <true>
+    Actual: <false>
+
+  package:test_api                          expect
+  test/example_partial_fail_test.dart 40:7  main.<fn>.<fn>
+
+00:01 +6 -1: test/example_partial_fail_test.dart: Leap year divisible by 400 but not by 125 is still a leap year        00:01 +6 -2: test/example_partial_fail_test.dart: Leap year divisible by 400 but not by 125 is still a leap year [E]
+
+  Expected: <true>
+    Actual: <false>
+
+  package:test_api                          expect
+  test/example_partial_fail_test.dart 45:7  main.<fn>.<fn>
+
+00:01 +6 -2: test/example_partial_fail_test.dart: Leap year divisible by 200, not divisible by 400 in common year       00:01 +7 -2: test/example_partial_fail_test.dart: Leap year divisible by 200, not divisible by 400 in common year       00:01 +7 -2: Some tests failed.
