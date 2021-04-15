@@ -25,8 +25,6 @@ slug="$1"
 input_dir="${2%/}"
 output_dir="${3%/}"
 exercise="${slug//-/_}"
-test_file="${input_dir}/test/${exercise}_test.dart"
-original_test_file="${input_dir}/test/${exercise}_test.dart.original"
 results_file="${output_dir}/results.json"
 build_log_file="${output_dir}/build.log"
 
@@ -37,19 +35,12 @@ echo "${slug}: testing..."
 
 pushd "${input_dir}" > /dev/null
 
-cp "${test_file}" "${original_test_file}" > /dev/null
-
-# Unskip the tests
-sed -i 's/skip: true/skip: false/g' "${test_file}"
-
 pub get --offline > "${build_log_file}"
 
 # Run the tests for the provided implementation file and redirect stdout and
 # stderr to capture it
-test_output=$(pub run test 2>&1)
+test_output=$(pub run test --run-skipped 2>&1)
 exit_code=$?
-
-mv -f "${original_test_file}" "${test_file}" > /dev/null
 
 popd > /dev/null
 
