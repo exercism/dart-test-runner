@@ -52,7 +52,7 @@ else
     # Sanitize the output
     sanitized_test_output=$(printf "${test_output}" | sed -E 's/[0-9]+:[0-9]+.*: //g')
 
-    jq -n --arg output "${sanitized_test_output}" '{version: 1, status: "fail", output: $output}' > ${results_file}
+    jq -n --arg output "${sanitized_test_output}" '{version: 1, status: "fail", message: $output}' > ${results_file}
 fi
 
 echo "${slug}: done"
