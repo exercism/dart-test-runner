@@ -35,7 +35,7 @@ echo "${slug}: testing..."
 
 pushd "${input_dir}" > /dev/null
 
-pub get --offline > "${build_log_file}"
+dart pub upgrade --offline > "${build_log_file}"
 
 # Run the tests for the provided implementation file and redirect stdout and
 # stderr to capture it
