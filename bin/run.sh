@@ -39,7 +39,7 @@ dart pub upgrade --offline > "${build_log_file}"
 
 # Run the tests for the provided implementation file and redirect stdout and
 # stderr to capture it
-test_output=$(pub run test --run-skipped 2>&1)
+test_output=$(dart test --run-skipped 2>&1)
 exit_code=$?
 
 popd > /dev/null
