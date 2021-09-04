@@ -3,3 +3,5 @@ tests/**/.dart_tool/
 tests/**/.packages
 tests/**/pubspec.lock
 tests/**/build.log
+
+/.idea/
