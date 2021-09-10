@@ -1,4 +1,4 @@
-FROM google/dart:2.12
+FROM google/dart:2.14.1
 
 RUN apt-get update && \
     apt-get install -y jq && \
