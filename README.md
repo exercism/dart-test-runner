@@ -2,6 +2,17 @@
 
 The Docker image to automatically run tests on Dart solutions submitted to [Exercism].
 
+## Prerequisite
+
+To run the scripts `bin/run.sh` or `bin/run-tests.sh`, you'll need the following:
+
+1. Docker installed locally (see https://docs.docker.com/get-docker/)
+2. bash
+3. The Dart SDK (see https://dart.dev/get-dart)
+4. jq (see https://stedolan.github.io/jq/download/)
+
+If you want to run the scripts `bin/run-in-docker.sh` or `bin/run-tests-in-docker.sh`, you won't need the Dart SDK or jq installed locally.
+
 ## Run the test runner
 
 To run the tests of an arbitrary exercise, do the following:
