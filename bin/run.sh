@@ -33,7 +33,7 @@ mkdir -p "${output_dir}"
 
 echo "${slug}: testing..."
 
-pushd "${input_dir}" > /dev/null
+pushd "${input_dir}" > /dev/null || exit
 
 dart pub upgrade --offline > "${build_log_file}"
 
@@ -42,17 +42,17 @@ dart pub upgrade --offline > "${build_log_file}"
 test_output=$(dart test --run-skipped 2>&1)
 exit_code=$?
 
-popd > /dev/null
+popd > /dev/null || exit
 
 # Write the results.json file based on the exit code of the command that was 
 # just executed that tested the implementation file
 if [ $exit_code -eq 0 ]; then
-    jq -n '{version: 1, status: "pass"}' > ${results_file}
+    jq -n '{version: 1, status: "pass"}' > "${results_file}"
 else
     # Sanitize the output
     sanitized_test_output=$(printf "${test_output}" | sed -E -e 's/[0-9]+:[0-9]+.*: //g')
 
-    jq -n --arg output "${sanitized_test_output}" '{version: 1, status: "fail", message: $output}' > ${results_file}
+    jq -n --arg output "${sanitized_test_output}" '{version: 1, status: "fail", message: $output}' > "${results_file}"
 fi
 
 echo "${slug}: done"
