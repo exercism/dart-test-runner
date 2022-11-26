@@ -1,4 +1,4 @@
-FROM dart:2.15.1
+FROM dart:2.18
 
 RUN apt-get update && \
     apt-get install -y jq && \

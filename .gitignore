@@ -5,3 +5,4 @@ tests/**/pubspec.lock
 tests/**/build.log
 
 /.idea/
+/.dart_tool/
