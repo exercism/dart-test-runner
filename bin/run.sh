@@ -35,6 +35,12 @@ echo "${slug}: testing..."
 
 pushd "${input_dir}" > /dev/null || exit
 
+dart pub upgrade --offline > "${build_log_file}"
+
+# copy prenade assets to speed up testing:
+mkdir -p "${input_dir}"/.dart_tool/pub/bin/test/
+cp /opt/test-runner/premade/test.dart-2.18.7.snapshot "${input_dir}"/.dart_tool/pub/bin/test/test.dart-2.18.7.snapshot
+
 # Run the tests for the provided implementation file and redirect stdout and
 # stderr to capture it
 test_output=$(dart test --run-skipped 2>&1)
