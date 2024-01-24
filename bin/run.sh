@@ -27,6 +27,7 @@ output_dir="${3%/}"
 exercise="${slug//-/_}"
 results_file="${output_dir}/results.json"
 build_log_file="${output_dir}/build.log"
+premade_path=/opt/test-runner/premade
 
 # Create the output directory if it doesn't exist
 mkdir -p "${output_dir}"
@@ -36,6 +37,10 @@ echo "${slug}: testing..."
 pushd "${input_dir}" > /dev/null || exit
 
 dart pub upgrade --offline > "${build_log_file}"
+
+# copy prenade assets to speed up testing:
+mkdir -p "${input_dir}"/.dart_tool/pub/bin/test/
+find "${premade_path}" -maxdepth 1 -type f -execdir ln -s "${premade_path}/{}" "${input_dir}/.dart_tool/pub/bin/test/{}" \;
 
 # Run the tests for the provided implementation file and redirect stdout and
 # stderr to capture it
