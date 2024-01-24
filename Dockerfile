@@ -13,6 +13,6 @@ RUN dart pub get
 
 COPY . .
 
-RUN /bin/sh -c "/opt/test-runner/bin/create-dart-snapshot.sh"
+RUN /opt/test-runner/bin/create-dart-snapshot.sh
 
 ENTRYPOINT ["/opt/test-runner/bin/run.sh"]
