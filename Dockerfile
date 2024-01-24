@@ -13,7 +13,6 @@ RUN dart pub get
 
 COPY . .
 
-RUN chmod +x "/opt/test-runner/bin/create-dart-snapshot.sh" && \
-    /bin/sh -c "/opt/test-runner/bin/create-dart-snapshot.sh"
+RUN /bin/sh -c "/opt/test-runner/bin/create-dart-snapshot.sh"
 
 ENTRYPOINT ["/opt/test-runner/bin/run.sh"]
