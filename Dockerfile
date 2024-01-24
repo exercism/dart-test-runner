@@ -11,8 +11,10 @@ WORKDIR /opt/test-runner
 COPY pubspec.lock pubspec.yaml ./
 RUN dart pub get
 
-COPY . .
+COPY bin/create-dart-snapshot.sh bin/create-dart-snapshot.sh
+COPY premade/ premade/
+RUN bin/create-dart-snapshot.sh
 
-RUN /opt/test-runner/bin/create-dart-snapshot.sh
+COPY . .
 
 ENTRYPOINT ["/opt/test-runner/bin/run.sh"]
