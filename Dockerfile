@@ -8,7 +8,7 @@ RUN apt-get update && \
 
 WORKDIR /opt/test-runner
 
-COPY pubspec.lock pubspec.yaml ./
+COPY pubspec.yaml ./
 RUN dart pub get
 
 COPY bin/create-dart-snapshot.sh bin/create-dart-snapshot.sh
