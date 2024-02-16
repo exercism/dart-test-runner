@@ -1,4 +1,4 @@
-FROM dart:2.18
+FROM dart:3.2
 
 RUN apt-get update && \
     apt-get install -y jq && \
@@ -9,6 +9,7 @@ RUN apt-get update && \
 WORKDIR /opt/test-runner
 
 COPY pubspec.lock pubspec.yaml ./
+COPY pubspec.yaml ./
 RUN dart pub get
 
 COPY bin/create-dart-snapshot.sh bin/create-dart-snapshot.sh
