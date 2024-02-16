@@ -8,6 +8,7 @@ RUN apt-get update && \
 
 WORKDIR /opt/test-runner
 
+COPY pubspec.lock pubspec.yaml ./
 COPY pubspec.yaml ./
 RUN dart pub get
 
