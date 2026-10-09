@@ -1,5 +1,5 @@
 # ---- builder: the full Dart SDK, used to fetch deps and build the test snapshot ----
-FROM dart:3.2 AS builder
+FROM dart:3.12 AS builder
 
 WORKDIR /opt/test-runner
 
