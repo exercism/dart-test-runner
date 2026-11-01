@@ -20,7 +20,7 @@ RUN cd /usr/lib/dart/bin/snapshots && \
 # ---- final: the shared, pinned Debian 13 (trixie) slim base used by other tracks ----
 # The Dart SDK links only glibc, and trixie's glibc (2.41) is newer than the bookworm
 # (2.36) it was built against, so the SDK runs here unchanged - no full dart:3.2 needed.
-FROM debian:trixie-slim@sha256:a29215f6a35e51e22adffa17f89e9d2ef06214e64a2bad10d765c46aea49f11f
+FROM debian:trixie-slim@sha256:f6b08b09a05725f9431502d3b5714f5c4576e82c1a84fa1debe0c24a7e0c3ec4
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends jq && \
