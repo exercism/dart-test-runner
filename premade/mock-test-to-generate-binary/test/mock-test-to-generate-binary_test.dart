@@ -1,4 +1,4 @@
-import 'package:leap/mock-test-to-generate-binary.dart';
+import '../lib/mock-test-to-generate-binary.dart';
 import 'package:test/test.dart';
 
 final leap = Leap();

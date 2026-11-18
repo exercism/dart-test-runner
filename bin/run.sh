@@ -42,6 +42,12 @@ dart pub upgrade --offline > "${build_log_file}"
 mkdir -p "${input_dir}"/.dart_tool/pub/bin/test/
 find "${premade_path}" -maxdepth 1 -type f -execdir ln -s "${premade_path}/{}" "${input_dir}/.dart_tool/pub/bin/test/{}" \;
 
+# Copy the precompiled package:test kernel, so `dart test` only compiles the
+# solution and its tests (see bin/create-dart-snapshot.sh). `dart test`
+# overwrites this file when it finishes, so each run gets its own copy.
+mkdir -p "${input_dir}"/.dart_tool/test/
+cp "${premade_path}"/kernel/* "${input_dir}/.dart_tool/test/"
+
 # Run the tests for the provided implementation file and redirect stdout and
 # stderr to capture it
 test_output=$(dart test --run-skipped 2>&1)
