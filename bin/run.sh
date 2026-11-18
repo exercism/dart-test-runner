@@ -36,11 +36,24 @@ echo "${slug}: testing..."
 
 pushd "${input_dir}" > /dev/null || exit
 
-dart pub upgrade --offline > "${build_log_file}"
+# Every exercise's pubspec.yaml lists the same dependencies, so `dart pub upgrade`
+# would resolve the same packages on every run, which takes about a second. If
+# this pubspec.yaml matches the one saved at image build apart from its name
+# (see bin/create-dart-snapshot.sh), we write the saved package_config.json with
+# this package's name instead. Otherwise we run pub as before.
+template_path="${premade_path}/template"
+package_name=$(sed -n -E "s/^name:[[:space:]]*['\"]?([a-z0-9_]+)['\"]?[[:space:]]*$/\1/p" pubspec.yaml)
 
-# copy prenade assets to speed up testing:
-mkdir -p "${input_dir}"/.dart_tool/pub/bin/test/
-find "${premade_path}" -maxdepth 1 -type f -execdir ln -s "${premade_path}/{}" "${input_dir}/.dart_tool/pub/bin/test/{}" \;
+if [ -n "${package_name}" ] &&
+   cmp -s <(grep -v '^name:' pubspec.yaml) <(grep -v '^name:' "${template_path}/pubspec.yaml"); then
+    mkdir -p "${input_dir}"/.dart_tool
+    jq --arg name "${package_name}" '(.packages[] | select(.rootUri == "../") | .name) = $name' \
+        "${template_path}/package_config.json" > "${input_dir}/.dart_tool/package_config.json"
+    use_snapshot=true
+else
+    dart pub upgrade --offline > "${build_log_file}"
+    use_snapshot=false
+fi
 
 # Copy the precompiled package:test kernel, so `dart test` only compiles the
 # solution and its tests (see bin/create-dart-snapshot.sh). `dart test`
@@ -50,7 +63,20 @@ cp "${premade_path}"/kernel/* "${input_dir}/.dart_tool/test/"
 
 # Run the tests for the provided implementation file and redirect stdout and
 # stderr to capture it
-test_output=$(dart test --run-skipped 2>&1)
+if [ "${use_snapshot}" = true ]; then
+    # `dart test` starts the dart command-line tool, which asks pub to check
+    # that the packages are up to date and to find package:test's precompiled
+    # snapshot. It then runs that snapshot with the project's package_config.json.
+    # We already know both, so we run the snapshot directly, which saves about
+    # 0.4 seconds.
+    test_output=$(dart --packages=.dart_tool/package_config.json "${premade_path}"/test.dart-*.snapshot --run-skipped 2>&1)
+else
+    # copy prenade assets to speed up testing:
+    mkdir -p "${input_dir}"/.dart_tool/pub/bin/test/
+    find "${premade_path}" -maxdepth 1 -type f -execdir ln -s "${premade_path}/{}" "${input_dir}/.dart_tool/pub/bin/test/{}" \;
+
+    test_output=$(dart test --run-skipped 2>&1)
+fi
 exit_code=$?
 
 popd > /dev/null || exit
