@@ -39,5 +39,16 @@ mv -v "${mock_test_path}/.dart_tool/pub/bin/test"/* "${premade_path}/"
 mkdir -p "${premade_path}/kernel"
 mv -v "${mock_test_path}/.dart_tool/test"/incremental_kernel.* "${premade_path}/kernel/"
 
+# Train an app-jit snapshot of package:test's runner on the mock test. Pub's
+# snapshot holds only kernel code, so the VM compiles the runner's code to
+# machine code on every run. The app-jit snapshot also holds the machine code
+# compiled during this training run, which saves about half a second per run.
+# The training run needs the saved kernel back in place, so it takes the same
+# path as a real run.
+mkdir -p "${mock_test_path}/.dart_tool/test" "${premade_path}/jit"
+cp "${premade_path}"/kernel/* "${mock_test_path}/.dart_tool/test/"
+dart --snapshot-kind=app-jit --snapshot="${premade_path}/jit/test.snapshot" \
+    "${premade_path}"/test.dart-*.snapshot --run-skipped
+
 # remove mock-test and artifacts
 rm "${mock_test_path}" -rf

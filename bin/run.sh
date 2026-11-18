@@ -68,8 +68,9 @@ if [ "${use_snapshot}" = true ]; then
     # that the packages are up to date and to find package:test's precompiled
     # snapshot. It then runs that snapshot with the project's package_config.json.
     # We already know both, so we run the snapshot directly, which saves about
-    # 0.4 seconds.
-    test_output=$(dart --packages=.dart_tool/package_config.json "${premade_path}"/test.dart-*.snapshot --run-skipped 2>&1)
+    # 0.4 seconds. We run the app-jit snapshot trained at image build, which
+    # already holds the runner's machine code (see bin/create-dart-snapshot.sh).
+    test_output=$(dart --packages=.dart_tool/package_config.json "${premade_path}"/jit/test.snapshot --run-skipped 2>&1)
 else
     # copy prenade assets to speed up testing:
     mkdir -p "${input_dir}"/.dart_tool/pub/bin/test/
