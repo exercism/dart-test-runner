@@ -14,6 +14,13 @@ cd "${mock_test_path}"
 dart pub upgrade --offline
 dart test --run-skipped
 
+# Save the mock's pubspec.yaml and the package_config.json written for it by pub.
+# Every exercise lists the same dependencies, so bin/run.sh reuses this
+# package_config.json for any pubspec.yaml that matches this one apart from its
+# name, and skips pub.
+mkdir -p "${premade_path}/template"
+cp -v pubspec.yaml .dart_tool/package_config.json "${premade_path}/template/"
+
 # save binary, '' to prevent gobling
 mv -v "${mock_test_path}/.dart_tool/pub/bin/test"/* "${premade_path}/"
 
