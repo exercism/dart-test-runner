@@ -81,7 +81,7 @@ if [ "${use_snapshot}" = true ]; then
     # already holds the runner's machine code (see bin/create-dart-snapshot.sh).
     test_output=$(dart --packages=.dart_tool/package_config.json "${premade_path}"/jit/test.snapshot --run-skipped --reporter=compact --color 2>&1)
 else
-    # copy prenade assets to speed up testing:
+    # link prenade assets to speed up testing:
     mkdir -p "${input_dir}"/.dart_tool/pub/bin/test/
     find "${premade_path}" -maxdepth 1 -type f -execdir ln -sf "${premade_path}/{}" "${input_dir}/.dart_tool/pub/bin/test/{}" \;
 
