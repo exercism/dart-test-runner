@@ -20,7 +20,8 @@ for test_dir in tests/*; do
     results_file_path="${test_dir_path}/results.json"
     expected_results_file_path="${test_dir_path}/expected_results.json"
 
-    bin/run.sh "${test_dir_name}" "${test_dir_path}" "${test_dir_path}"
+    # Stop if the test runner can't run at all, rather than compare a stale results file
+    bin/run.sh "${test_dir_name}" "${test_dir_path}" "${test_dir_path}" || exit 1
 
     # OPTIONAL: Normalize the results file
     # If the results.json file contains information that changes between 
