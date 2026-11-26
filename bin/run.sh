@@ -29,6 +29,13 @@ results_file="${output_dir}/results.json"
 build_log_file="${output_dir}/build.log"
 premade_path=/opt/test-runner/premade
 
+# The test runner relies on files that are only built into the Docker image
+if [ ! -d "${premade_path}" ]; then
+    echo "warning: ${premade_path} not found. bin/run.sh only works inside the Docker image." >&2
+    echo "Use bin/run-in-docker.sh instead (or bin/run-tests-in-docker.sh to run the tests)." >&2
+    exit 1
+fi
+
 # Create the output directory if it doesn't exist
 mkdir -p "${output_dir}"
 
@@ -62,7 +69,9 @@ mkdir -p "${input_dir}"/.dart_tool/test/
 cp "${premade_path}"/kernel/* "${input_dir}/.dart_tool/test/"
 
 # Run the tests for the provided implementation file and redirect stdout and
-# stderr to capture it
+# stderr to capture it. Because the output is captured, package:test would default
+# to its plain "expanded" reporter, so we ask for the coloured "compact" one, which
+# only lists the failing tests.
 if [ "${use_snapshot}" = true ]; then
     # `dart test` starts the dart command-line tool, which asks pub to check
     # that the packages are up to date and to find package:test's precompiled
@@ -70,13 +79,13 @@ if [ "${use_snapshot}" = true ]; then
     # We already know both, so we run the snapshot directly, which saves about
     # 0.4 seconds. We run the app-jit snapshot trained at image build, which
     # already holds the runner's machine code (see bin/create-dart-snapshot.sh).
-    test_output=$(dart --packages=.dart_tool/package_config.json "${premade_path}"/jit/test.snapshot --run-skipped 2>&1)
+    test_output=$(dart --packages=.dart_tool/package_config.json "${premade_path}"/jit/test.snapshot --run-skipped --reporter=compact --color 2>&1)
 else
-    # copy prenade assets to speed up testing:
+    # link prenade assets to speed up testing:
     mkdir -p "${input_dir}"/.dart_tool/pub/bin/test/
-    find "${premade_path}" -maxdepth 1 -type f -execdir ln -s "${premade_path}/{}" "${input_dir}/.dart_tool/pub/bin/test/{}" \;
+    find "${premade_path}" -maxdepth 1 -type f -execdir ln -sf "${premade_path}/{}" "${input_dir}/.dart_tool/pub/bin/test/{}" \;
 
-    test_output=$(dart test --run-skipped 2>&1)
+    test_output=$(dart test --run-skipped --reporter=compact --color 2>&1)
 fi
 exit_code=$?
 

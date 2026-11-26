@@ -14,7 +14,7 @@ set -e
 # ./bin/run-tests-in-docker.sh
 
 # Build the Docker image
-docker build --rm -t exercism/test-runner .
+docker build --rm -t exercism/dart-test-runner .
 
 # Run the Docker image using the settings mimicking the production environment
 docker run \
@@ -25,4 +25,4 @@ docker run \
     --mount type=tmpfs,dst=/tmp \
     --workdir /opt/test-runner \
     --entrypoint /opt/test-runner/bin/run-tests.sh \
-    exercism/test-runner
+    exercism/dart-test-runner
